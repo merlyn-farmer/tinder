@@ -6,7 +6,7 @@ import random
 from selenium import webdriver
 import pyautogui as pg
 from selenium.webdriver.common.by import By
-
+from shapely.geometry import Polygon, Point
 
 def get_session():
     with open("sessions", "r") as f:
@@ -33,8 +33,8 @@ def get_session_name():
         return session_name
 
 
-def create_driver(session):
-        mla_url = 'http://127.0.0.1:35000/api/v1/profile/start?automation=true&profileId=' + session
+def create_driver(session, port):
+        mla_url = f'http://127.0.0.1:{port}/api/v1/profile/start?automation=true&profileId=' + session
         resp = requests.get(mla_url)
         json = resp.json()
         print(json)
@@ -42,29 +42,7 @@ def create_driver(session):
         return driver
 
 
-def get_longitude():
-    with open("geo/longitudes", "r") as f:
-        longitudes = f.readlines()
-        longitude = longitudes[0].strip()
 
-    with open("geo/longitudes", "w") as f:
-        new_list = longitudes[1:]
-        content = "".join(new_list)
-        f.write(content)
-
-        return longitude
-
-def get_latitude():
-    with open("geo/latitudes", "r") as f:
-        latitudes = f.readlines()
-        latitude = latitudes[0].strip()
-
-    with open("geo/latitudes", "w") as f:
-        new_list = latitudes[1:]
-        content = "".join(new_list)
-        f.write(content)
-
-        return latitude
 
 
 def get_name():
@@ -94,8 +72,9 @@ def get_group():
 
         return group
 
-def update_profile_proxy(profile_id, proxy_type, proxy_host, proxy_port, proxy_username, proxy_password):
-    url = 'http://localhost:35000/api/v2/profile/' + profile_id
+
+def update_profile_proxy(profile_id, proxy_type, proxy_host, proxy_port, proxy_username, proxy_password, port):
+    url = f'http://localhost:{port}/api/v2/profile/' + profile_id
     header = {
         "accept": "application/json",
         "Content-Type": "application/json"
@@ -115,8 +94,8 @@ def update_profile_proxy(profile_id, proxy_type, proxy_host, proxy_port, proxy_u
     print(r.status_code)
 
 
-def update_profile_group(profile_id, group_id):
-    url = 'http://localhost:35000/api/v2/profile/' + profile_id
+def update_profile_group(profile_id, group_id, port):
+    url = f'http://localhost:{port}/api/v2/profile/' + profile_id
     header = {
         "accept": "application/json",
         "Content-Type": "application/json"
@@ -127,8 +106,8 @@ def update_profile_group(profile_id, group_id):
     r = requests.post(url, json.dumps(data), headers=header)
     print(r.status_code)
 
-def update_profile_geo(profile_id, latitude, longitude):
-    url = 'http://localhost:35000/api/v2/profile/' + profile_id
+def update_profile_geo(profile_id, latitude, longitude, port):
+    url = f'http://localhost:{port}/api/v2/profile/' + profile_id
     header = {
         "accept": "application/json",
         "Content-Type": "application/json"
@@ -148,14 +127,13 @@ def update_profile_geo(profile_id, latitude, longitude):
     r = requests.post(url, json.dumps(data), headers=header)
     print(r.status_code)
 
-def create_profile(session_name, website, group):
+def create_profile(session_name, website, port):
     x = {
         "name": f"{session_name}",
         "browser": "mimic",
         "os": "win",
         "enableLock": True,
-        "startUrl": f"{website}",
-        "group": f"{group}"
+        "startUrl": f"{website}"
 
 
     }
@@ -163,7 +141,7 @@ def create_profile(session_name, website, group):
         "accept": "application/json",
         "Content-Type": "application/json"
     }
-    url = "http://localhost:35000/api/v2/profile"
+    url = f"http://localhost:{port}/api/v2/profile"
     req = requests.post(url, data=json.dumps(x), headers=header)
 
     return json.loads(req.content).get("uuid")
@@ -202,8 +180,4 @@ def get_proxy_host():
         proxy_host = proxy_hosts[0].strip()
 
         return proxy_host
-
-
-
-
 

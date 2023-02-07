@@ -8,28 +8,35 @@ from info import get_proxy_username
 from info import get_proxy_password
 from info import get_session_name
 from info import update_profile_geo
-from info import get_latitude
-from info import get_longitude
+
 from info import get_website
-from info import get_group
+from GEO import geo_coords
+
 import requests
 
-for i in range(1):
-    time.sleep(1)
-    proxy_type = "HTTP"
-    proxy_password = get_proxy_password()
-    proxy_host = get_proxy_host()
-    proxy_username = get_proxy_username()
-    proxy_port = get_proxy_port()
-    session_name = get_session_name()
-    latitude = get_latitude()
-    longitude = get_longitude()
-    website = get_website()
-    group = get_group()
+def get_port(port):
 
-    profile_id = create_profile(session_name=session_name, website=website, group=group)
-    time.sleep(5)
-    update_profile_proxy(profile_id=profile_id, proxy_port=proxy_port, proxy_username=proxy_username, proxy_host=proxy_host,
-                         proxy_password=proxy_password, proxy_type=proxy_type)
-    time.sleep(5)
-    update_profile_geo(profile_id=profile_id, latitude=latitude, longitude=longitude)
+    for i in range(2):
+        time.sleep(1)
+        proxy_type = "HTTP"
+        proxy_password = get_proxy_password()
+        proxy_host = get_proxy_host()
+        proxy_username = get_proxy_username()
+        proxy_port = get_proxy_port()
+        session_name = get_session_name()
+
+        website = get_website()
+
+        profile_id = create_profile(session_name=session_name, website=website, port=port)
+        time.sleep(5)
+        update_profile_proxy(profile_id=profile_id, proxy_port=proxy_port, proxy_username=proxy_username, proxy_host=proxy_host,
+                             proxy_password=proxy_password, proxy_type=proxy_type, port=port)
+        time.sleep(5)
+        latitude, longitude = geo_coords()
+        update_profile_geo(profile_id=profile_id, latitude=latitude, longitude=longitude, port=port)
+
+get_port(port="34800")
+
+#   Multilogin  34800
+#   Indigo      34575
+
