@@ -42,9 +42,6 @@ def create_driver(session, port):
         return driver
 
 
-
-
-
 def get_name():
     with open("names", "r") as f:
         list_names = f.readlines()
@@ -64,13 +61,6 @@ def get_website():
         websites = website[0].strip()
 
         return website
-
-def get_group():
-    with open("group", "r") as f:
-        group = f.readline()
-        groups = group[0].strip()
-
-        return group
 
 
 def update_profile_proxy(profile_id, proxy_type, proxy_host, proxy_port, proxy_username, proxy_password, port):
