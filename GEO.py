@@ -59,7 +59,7 @@ def geo_coords():
 # TAG - msk , piter , istan , warszawa , budapest , prague
 # TAG - paris , london ,
 
-    poly = msk
+    poly = paris
 
 ############################################
 
