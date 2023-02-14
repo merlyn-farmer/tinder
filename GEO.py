@@ -57,9 +57,9 @@ def geo_coords():
 
 ############################################
 # TAG - msk , piter , istan , warszawa , budapest , prague
-# TAG - paris , london ,
+# TAG - paris , london , dubai
 
-    poly = paris
+    poly = dubai
 
 ############################################
 

@@ -1,4 +1,5 @@
 import time
+import sys
 
 from info import create_profile
 from info import update_profile_proxy
@@ -8,15 +9,21 @@ from info import get_proxy_username
 from info import get_proxy_password
 from info import get_session_name
 from info import update_profile_geo
-
+from GUI import Example
+from GUI import QApplication
 from info import get_website
 from GEO import geo_coords
 
 import requests
 
+
+
 def get_port(port):
 
-    for i in range(2):
+    numb = 8
+
+
+    for i in range(numb):
         time.sleep(1)
         proxy_type = "HTTP"
         proxy_password = get_proxy_password()
